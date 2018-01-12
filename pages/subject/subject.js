@@ -9,7 +9,9 @@ Page({
     disabled: false,    //下一题按钮
     setOver: 'true',    //答题是否结束,是否显示二维码
     //show_arrow: true    //弹窗显示
-    idArr:[]
+    idArr:[],
+    click:0, //点击次数
+    setting:false //点击3次可编辑
   },
 
   /**
@@ -61,7 +63,7 @@ Page({
 
 console.log("sign",sign);
       wx.request({
-        url: 'https://friend-check.playonwechat.com/api/change-question' + '?operator_id=' + wx.getStorageSync("operator_id"),
+        url: app.data.apiurl +'api/change-question' + '?operator_id=' + wx.getStorageSync("operator_id"),
         data: {
           sign: sign
         },
@@ -99,6 +101,26 @@ console.log("sign",sign);
           })
         }
       })
+      // 是否允许用户编辑
+      wx.request({
+        url: app.data.apiurl + "api/change-v?sign=" + wx.getStorageSync('sign') + '&operator_id=' + wx.getStorageSync("operator_id"),
+        header: {
+          'content-type': 'application/json'
+        },
+        method: "GET",
+        success: function (res) {
+          console.log("是否允许用户编辑:", res);
+          var status = res.data.status;
+          if (status == 1) {
+            that.setData({
+              flag: res.data.flag,
+            })
+          } else {
+            console.log(res.data.msg)
+          }
+          wx.hideLoading()
+        }
+      })
     })
 
 
@@ -132,7 +154,7 @@ console.log("sign",sign);
       var qid = that.data.qid;
       
       wx.request({
-        url: 'https://friend-check.playonwechat.com/api/change-question' + '?operator_id=' + wx.getStorageSync("operator_id"),
+        url: app.data.apiurl +'api/change-question' + '?operator_id=' + wx.getStorageSync("operator_id"),
         data: {
           sign: sign,
           option: option,
@@ -208,9 +230,24 @@ console.log("sign",sign);
   changeSubject:function(){
     var that = this;
     var sign = app.data.sign;
-
+    let click = that.data.click;
+    that.setData({
+      click: click + 1
+    })
+    console.log(that.data.click);
+    if (click >1){
+      wx.showToast({
+        title: '您可以自己编辑题目及答案',
+        icon: 'success',
+        duration: 3000
+      })
+      that.setData({
+        setting:true
+      })
+    }
+    
     wx.request({
-      url: 'https://friend-check.playonwechat.com/api/change-question' + '?operator_id=' + wx.getStorageSync("operator_id"),
+      url: app.data.apiurl + 'api/change-question' + '?operator_id=' + wx.getStorageSync("operator_id"),
       data: {
         sign: sign
       },
@@ -264,7 +301,7 @@ console.log("sign",sign);
       title: '生成中',
     })
     wx.request({
-      url: 'https://friend-check.playonwechat.com/api/save-user-question',
+      url: app.data.apiurl+'api/save-user-question',
       data: {
         sign: sign
       },
@@ -326,7 +363,7 @@ console.log("sign",sign);
   share: function () {
     var sign = app.data.sign;
     wx.request({
-      url: 'https://friend-check.playonwechat.com/api/save-user-question',
+      url: app.data.apiurl +'api/save-user-question',
       data: {
         sign: sign
       },

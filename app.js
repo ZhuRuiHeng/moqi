@@ -3,7 +3,8 @@ App({
   data:{
     nickName:"",
     dataUrl: "https://qncdn.playonwechat.com/music/hello.mp3",
-    music_play: true
+    music_play: true,
+    apiurl: 'https://friend-check.playonwechat.com/v1/',
   },
   onLaunch: function () {
     this.getUserInfo();

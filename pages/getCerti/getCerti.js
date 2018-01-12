@@ -110,57 +110,54 @@ Page({
 
   // 偷看答案，支付
   getCerti(){
-    wx.navigateTo({
-      url: '../answer_list/answer_list?source=end',
-    })
-    // var sign = app.data.sign;
-    // wx.request({
-    //   url: "https://friend-check.playonwechat.com/api/payment-status?sign=" + sign + "&operator_id=" + wx.getStorageSync("operator_id"),
-    //   success:function(res){
-    //     console.log("是否需要支付",res);
-    //     if(res.data.status){
-    //       var canSee = res.data.data.can_peep_answer;
-    //       if(canSee == 0){
-    //         wx.showModal({
-    //           title: '温馨提示',
-    //           content: '哼，想偷看答案？没门！哈哈，小默给你开通白金VIP通道，1块钱看所有答案，以后出任何题目都可以直接查看，包括朋友的答案哟！',
-    //           success: function(res){
-    //             if(res.confirm){
-    //               console.log("确定");
-    //               wx.request({
-    //                 url: "https://friend-check.playonwechat.com/api/create-order?sign=" + sign + "&operator_id=" + wx.getStorageSync("operator_id"),
-    //                 success:function(res){
-    //                   console.log(res);
-    //                   if(res.data.status){
-    //                     wx.requestPayment({
-    //                       'timeStamp': res.data.data.timeStamp,
-    //                       'nonceStr': res.data.data.nonceStr,
-    //                       'package': res.data.data.package,
-    //                       'signType': 'MD5',
-    //                       'paySign': res.data.data.paySign,
-    //                       'success': function (res) {
-    //                         wx.navigateTo({
-    //                           url: '../answer_list/answer_list',
-    //                         })
-    //                       },
-    //                       'fail': function (res) {
-    //                       }
-    //                     })
-    //                   }
-    //                 }
-    //               })
+    var sign = app.data.sign;
+    wx.request({
+      url: "https://friend-check.playonwechat.com/api/payment-status?sign=" + sign + "&operator_id=" + wx.getStorageSync("operator_id"),
+      success:function(res){
+        console.log("是否需要支付",res);
+        if(res.data.status){
+          var canSee = res.data.data.can_peep_answer;
+          if(canSee == 0){
+            wx.showModal({
+              title: '温馨提示',
+              content: '哼，想偷看答案？没门！哈哈，小默给你开通白金VIP通道，1块钱看所有答案，以后出任何题目都可以直接查看，包括朋友的答案哟！',
+              success: function(res){
+                if(res.confirm){
+                  console.log("确定");
+                  wx.request({
+                    url: "https://friend-check.playonwechat.com/api/create-order?sign=" + sign + "&operator_id=" + wx.getStorageSync("operator_id"),
+                    success:function(res){
+                      console.log(res);
+                      if(res.data.status){
+                        wx.requestPayment({
+                          'timeStamp': res.data.data.timeStamp,
+                          'nonceStr': res.data.data.nonceStr,
+                          'package': res.data.data.package,
+                          'signType': 'MD5',
+                          'paySign': res.data.data.paySign,
+                          'success': function (res) {
+                            wx.navigateTo({
+                              url: '../answer_list/answer_list',
+                            })
+                          },
+                          'fail': function (res) {
+                          }
+                        })
+                      }
+                    }
+                  })
                  
-    //             }
-    //           }
-    //         })
-    //       }else{
-    //        wx.navigateTo({
-    //          url: '../answer_list/answer_list',
-    //        })
-    //       }
-    //     }
-    //   }
-    // })
+                }
+              }
+            })
+          }else{
+           wx.navigateTo({
+             url: '../answer_list/answer_list',
+           })
+          }
+        }
+      }
+    })
     
   },
   

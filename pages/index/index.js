@@ -1,4 +1,5 @@
-// pages/before/before.js
+var utils = require("../../utils/util.js");
+var app = getApp();
 Page({
 
   /**
@@ -58,15 +59,15 @@ Page({
           var inter = setInterval(function () {
             if (second <= 1) {
               clearInterval(inter);
-              // if (that.data.uid != "undefined" && that.data.uid != "") {
-              //   wx.redirectTo({
-              //     url: '../begin_answer/begin_answer?uid=' + that.data.uid + '&set_number=' + that.data.set_number,
-              //   })
-              // }else{
+              if (that.data.uid != "undefined" && that.data.uid != "") {
+                wx.redirectTo({
+                  url: '../begin_answer/begin_answer?uid=' + that.data.uid + '&set_number=' + that.data.set_number,
+                })
+              }else{
                 wx.switchTab({
                   url: '../before/before',
                 })
-              //}
+              }
             }
             second--;
             console.log(second);
@@ -78,48 +79,126 @@ Page({
         }
       }
     })
+    // 是否设置性别
+    wx.request({
+      url: app.data.apiurl + "api/is-set-gender?sign=" + wx.getStorageSync('sign') + '&operator_id=' + wx.getStorageSync("operator_id"),
+      header: {
+        'content-type': 'application/json'
+      },
+      method: "GET",
+      success: function (res) {
+        console.log("是否设置性别:", res);
+        var status = res.data.status;
+        if (status == 1) {
+          if (res.data.flag==0){ //去设置
+            wx.reLaunch({
+              url: '../choose/choose'
+            })
+          }else{  //获取性别
+            // 获取性别
+            wx.request({
+              url: app.data.apiurl + "api/get-gender?sign=" + wx.getStorageSync('sign') + '&operator_id=' + wx.getStorageSync("operator_id"),
+              header: {
+                'content-type': 'application/json'
+              },
+              method: "GET",
+              success: function (res) {
+                console.log("获取性别:", res);
+                console.log(res.data.sex, '性别')
+                var status = res.data.status;
+                if (status == 1) {
+                  that.setData({
+                    sex: res.data.sex,
+                  })
+                  wx.setStorageSync('sex', res.data.sex);
+                } else {
+                  console.log(res.data.msg)
+                  wx.reLaunch({
+                    url: '../choose/choose'
+                  })
+                }
+                wx.hideLoading()
+              }
+            })
+          }
+         wx.setStorageSync('sex', res.data.sex);
+        } else {
+          console.log(res.data.msg)
+          wx.reLaunch({
+            url: '../choose/choose'
+          })
+        }
+        wx.hideLoading()
+      }
+    })
+    
   },
 
 
   jumpAd() {
     var inter = this.data.inter;
     clearInterval(inter);
-    wx.switchTab({
-      url: '../before/before',
-    })
+    if (wx.getStorageSync('sex')){
+      wx.switchTab({
+        url: '../before/before',
+      })
+    }else{
+      wx.request({
+        url: app.data.apiurl + "api/is-set-gender?sign=" + wx.getStorageSync('sign') + '&operator_id=' + wx.getStorageSync("operator_id"),
+        header: {
+          'content-type': 'application/json'
+        },
+        method: "GET",
+        success: function (res) {
+          console.log("是否设置性别:", res);
+          var status = res.data.status;
+          if (status == 1) {
+            if (res.data.flag == 1) { //去设置
+              wx.reLaunch({
+                url: '../choose/choose'
+              })
+            } else {  //获取性别
+              // 获取性别
+              wx.request({
+                url: app.data.apiurl + "api/get-gender?sign=" + wx.getStorageSync('sign') + '&operator_id=' + wx.getStorageSync("operator_id"),
+                header: {
+                  'content-type': 'application/json'
+                },
+                method: "GET",
+                success: function (res) {
+                  console.log("获取性别:", res);
+                  var status = res.data.status;
+                  if (status == 1) {
+                    that.setData({
+                      sex: res.data.sex,
+                    })
+                    wx.setStorageSync('sex', res.data.sex);
+                  } else {
+                    console.log(res.data.msg)
+                    wx.reLaunch({
+                      url: '../choose/choose'
+                    })
+                  }
+                  wx.hideLoading()
+                }
+              })
+            }
+            wx.setStorageSync('sex', res.data.sex);
+          } else {
+            console.log(res.data.msg)
+            wx.reLaunch({
+              url: '../choose/choose'
+            })
+          }
+          wx.hideLoading()
+        }
+      })
+    }
+    
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
 
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
+ 
   onShareAppMessage: function () {
     return {
       path: '/pages/index/index',

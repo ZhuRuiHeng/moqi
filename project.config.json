@@ -47,10 +47,11 @@
 					"scene": "1001"
 				},
 				{
-					"id": 4,
+					"id": 3,
 					"name": "选择性别",
 					"pathName": "pages/choose/choose",
-					"query": ""
+					"query": "",
+					"scene": "1001"
 				},
 				{
 					"id": 4,
@@ -63,7 +64,7 @@
 					"id": 5,
 					"name": "二维码分享",
 					"pathName": "pages/index/index",
-					"query": "scene=351871-3",
+					"query": "scene=351871-5",
 					"scene": "1001"
 				},
 				{

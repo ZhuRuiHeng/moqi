@@ -50,7 +50,7 @@ console.log("onload id",set_number,uid);
 
     if (set_number && uid) {
       wx.request({
-        url: 'https://friend-check.playonwechat.com/api/answer-question-by-uid' + '?operator_id=' + wx.getStorageSync("operator_id"),
+        url: app.data.apiurl +'api/answer-question-by-uid' + '?operator_id=' + wx.getStorageSync("operator_id"),
         data: {
           sign: sign,
           problemMakerId: uid,
@@ -132,7 +132,7 @@ console.log("onload id",set_number,uid);
     console.log("头像",avatar);
 
     wx.request({
-      url: 'https://friend-check.playonwechat.com/api/answer-question-by-uid' + '?operator_id=' + wx.getStorageSync("operator_id"),
+      url: app.data.apiurl +'api/answer-question-by-uid' + '?operator_id=' + wx.getStorageSync("operator_id"),
       data: {
         sign: sign,
         problemMakerId: uid,
