@@ -1,0 +1,37 @@
+<!--pages/share/share.wxml-->
+<view class="container" style="background:url(http://ovhvevt35.bkt.clouddn.com/moqi/background.png) no-repeat;background-size:cover;">
+<view class='certi_img'  style="background:url(http://ovhvevt35.bkt.clouddn.com/moqi/result.png) no-repeat;background-size:cover;">
+  <image src="{{imgUrl}}" class="" bindtap="prewImg" mode='widthFix'></image>
+</view>
+  
+  <view class="certi_wrap">
+    <view class="certi_title">质检列表</view>
+    <scroll-view scroll-y="true">
+    <block wx:for="{{array}}" wx:key="{{index}}">
+      <view class="parent_item" >
+        <image src="{{item.headimgurl}}"></image>
+        <view class="parent_center">
+          <view class="parent_name">{{item.nickname}}</view>
+          <view class="parent_desc">{{item.comments}}</view>
+        </view>
+        <view class="parent_right">{{item.correct_percent}}%</view>
+      </view>
+    </block>
+    </scroll-view>
+  </view>
+
+  <view class="tab_wrap">
+    <view class="share_btn" bindtap="wantSet">
+      <image src="../../resource/tabbar/icon1a.png"></image>
+      <view class="">我也要玩</view>
+    </view>
+    <button class="share_btn" bindtap="getCerti">
+      <image src="http://ovhvevt35.bkt.clouddn.com/moqi/answer.png"></image>
+      <view>偷看答案</view>
+    </button>
+  </view>
+
+  <button class="home_icon"  bindtap="backHome">
+    <image src="../../resource/images/home_icon.png"></image>
+  </button>
+</view>

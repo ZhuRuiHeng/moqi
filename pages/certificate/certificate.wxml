@@ -1,0 +1,17 @@
+<!--pages/certificate/certificate.wxml-->
+<view class="container" style="background:url(http://ovhvevt35.bkt.clouddn.com/moqi/background.png) no-repeat;background-size:cover;">
+<scroll-view>
+  <view class="certificate">
+    <view class="img_wrap">
+      <image src="{{imgUrl}}" bindtap="prewImg"></image>
+    </view>
+
+    <button class="download_carti" bindtap="downLoad">下载证书</button>
+
+  </view>
+
+  <button class="home_icon"  bindtap="backHome">
+    <image src="../../resource/images/home_icon.png"></image>
+  </button>
+  </scroll-view>
+</view>

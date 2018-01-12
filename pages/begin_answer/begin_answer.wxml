@@ -1,0 +1,17 @@
+<!--pages/begin_answer/begin_answer.wxml-->
+
+<view class="container" style="background:url(http://ovhvevt35.bkt.clouddn.com/moqi/background.png) no-repeat;background-size:cover;">
+  <view class="play {{music_play?'music_play':''}}" bindtap="bindPlay"></view>
+  <view class="tip">开启/关闭</view>
+  <scroll-view>
+    <view class="logo_wrap zoomIn">
+      <image class='niceImg' src="http://ovhvevt35.bkt.clouddn.com/moqi/bgGail.png" mode='widthFix'></image>
+      <image class='little girl' src="http://ovhvevt35.bkt.clouddn.com/moqi/girl.png" mode="widthFix"></image>
+      <!-- <image class='niceImg' src="http://ovhvevt35.bkt.clouddn.com/moqi/boya.png" mode='widthFix'></image>
+      <image class='little boy' src="http://ovhvevt35.bkt.clouddn.com/moqi/boy.png" mode="widthFix"></image> -->
+    </view>
+    <form report-submit="true" bindsubmit="naviSubject" class="formSubmit">
+      <button class="nav_subject zoomIn" formType="submit">开始答题</button>
+    </form>
+  </scroll-view>
+</view>
